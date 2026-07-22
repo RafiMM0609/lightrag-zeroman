@@ -1,0 +1,64 @@
+# Python Caches & Build Files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+
+# Environment Variables & Secrets
+.env
+.env.*
+!.env.example
+.apple-container.env
+
+# IDE / Editors
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS-specific files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+ehthumbs.db
+
+# Project-specific / LightRAG Data & Logs
+*.log
+*.log.*
+rag_storage/
+inputs/
+outputs/
+data/
+local_neo4jWorkDir/
+neo4jWorkDir/
+
+# Node/Web Build (for UI parts if any)
+node_modules/
+dist/
+
+# Temporary / Test files
+temp/
+tmp/
+/parse_output/
+ag2_demo_workdir/
+
+# Test
+**/tests/**
