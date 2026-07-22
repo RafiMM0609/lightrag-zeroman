@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # Development service with Hot Module Replacement (HMR)
+  webui-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    container_name: lightrag-webui-dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      # Prevents host's node_modules from overriding container's node_modules
+      - /app/node_modules
+    environment:
+      # URL to the LightRAG backend API.
+      # If running the backend on the host, use http://host.docker.internal:9621
+      # If running in a separate docker network, change to http://your-backend-service:9621
+      - VITE_BACKEND_URL=http://host.docker.internal:9621
+      - VITE_API_PROXY=true
+      - VITE_API_ENDPOINTS=/api,/documents,/graphs,/graph,/health,/query,/docs,/redoc,/openapi.json,/login,/auth-status,/static
+    # Enable host.docker.internal resolution in Linux environments
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    stdin_open: true
+    tty: true
+
+  # Production service (built static assets served via Nginx)
+  webui-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: lightrag-webui-prod
+    ports:
+      - "8080:80"
+    environment:
+      - NODE_ENV=production
