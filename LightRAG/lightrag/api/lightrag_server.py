@@ -2672,6 +2672,25 @@ def create_app(args):
     if webui_assets_exist:
         static_dir = Path(__file__).parent / "webui"
         static_dir.mkdir(exist_ok=True)
+
+        # Explicit redirect for /webui (no trailing slash) → /webui/
+        # StaticFiles does this internally with a 307, but that redirect does
+        # not honour X-Forwarded-Proto from Cloudflare Tunnel (or any other
+        # TLS-terminating reverse proxy running on plain HTTP).  By handling
+        # the redirect here we can read the forwarded scheme ourselves and
+        # produce the correct https:// Location header without requiring
+        # uvicorn proxy_headers / forwarded_allow_ips configuration.
+        @app.get(webui_path, include_in_schema=False)
+        async def redirect_webui_no_slash(request: Request):
+            """Redirect /webui → /webui/ honouring X-Forwarded-Proto."""
+            scheme = request.headers.get("x-forwarded-proto", request.url.scheme)
+            host = request.headers.get("x-forwarded-host", request.url.netloc)
+            root = request.scope.get("root_path", "")
+            return RedirectResponse(
+                url=f"{scheme}://{host}{root}{webui_path}/",
+                status_code=301,
+            )
+
         app.mount(
             webui_path,
             SmartStaticFiles(
