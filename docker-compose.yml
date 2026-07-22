@@ -11,7 +11,14 @@ services:
       - ./LightRAG/data/inputs:/app/data/inputs
       - ./LightRAG/data/prompts:/app/data/prompts
       - ./LightRAG/.env:/app/.env
-      - ./LightRAG/lightrag:/app/lightrag
+      # NOTE: Do NOT mount the entire ./LightRAG/lightrag directory here —
+      # the Docker image builds the WebUI assets into /app/lightrag/api/webui
+      # during the frontend-builder stage, and a broad bind-mount would shadow
+      # (hide) those built assets with the bare source tree from the host.
+      # If you need live Python code reloading, mount only the specific files
+      # or subdirectories you are actively editing, e.g.:
+      #   - ./LightRAG/lightrag/api/lightrag_server.py:/app/lightrag/api/lightrag_server.py
+
     command: python -m lightrag.api.lightrag_server
     deploy:
       restart_policy:
