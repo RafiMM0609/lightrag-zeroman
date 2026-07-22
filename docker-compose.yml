@@ -4,8 +4,6 @@ services:
     build:
       context: ./LightRAG
       dockerfile: Dockerfile
-      tags:
-        - ghcr.io/hkuds/lightrag:latest
     ports:
       - "${LIGHTRAG_HOST:-0.0.0.0}:${LIGHTRAG_PORT:-9621}:9621"
     volumes:
