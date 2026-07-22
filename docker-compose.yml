@@ -12,7 +12,7 @@ services:
       - ./LightRAG/data/prompts:/app/data/prompts
       - ./LightRAG/.env:/app/.env
       - ./LightRAG/lightrag:/app/lightrag
-    command: python -m lightrag.api.lightrag_server --proxy-headers --forwarded-allow-ips 0.0.0.0/0
+    command: python -m lightrag.api.lightrag_server
     deploy:
       restart_policy:
         condition: on-failure

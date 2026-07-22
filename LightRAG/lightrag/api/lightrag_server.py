@@ -2853,6 +2853,12 @@ def main():
         "host": global_args.host,
         "port": global_args.port,
         "log_config": None,  # Disable default config
+        # Trust X-Forwarded-Proto/X-Forwarded-For headers from any upstream
+        # proxy (e.g. Cloudflare Tunnel, nginx). Required so that FastAPI
+        # generates https:// redirects (e.g. /webui → /webui/) when the
+        # server itself runs on plain HTTP behind a TLS-terminating proxy.
+        "proxy_headers": True,
+        "forwarded_allow_ips": "*",
     }
 
     if global_args.ssl:
