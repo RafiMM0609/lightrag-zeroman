@@ -1,4 +1,4 @@
-node_modules
+xnode_modules
 .git
 .github
 dist
@@ -11,6 +11,5 @@ bun.lockb
 .env.local
 docker-compose.yml
 Dockerfile
-nginx.conf
 README.md
 WEBUI-README.md
