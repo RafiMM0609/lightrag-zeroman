@@ -14,7 +14,7 @@ services:
       - ./data/prompts:/app/data/prompts
       - ./.env:/app/.env
       - ./lightrag:/app/lightrag
-    command: uvicorn lightrag.api.lightrag_server:get_application --factory --reload --host 0.0.0.0 --port 9621
+    command: python -m lightrag.api.lightrag_server
     deploy:
       restart_policy:
         condition: on-failure
